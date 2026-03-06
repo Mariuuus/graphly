@@ -1,0 +1,15 @@
+[package]
+name = "graphly"
+version = "0.1.0"
+compiler = "0.14.2"
+repository = "https://github.com/Mariuuus/graphly"
+homepage = "https://github.com/Mariuuus/graphly"
+entrypoint = "src/lib.typ"
+authors = [
+  "Marius Strauss <https://github.com/Mariuuus>"
+]
+categories = [ "visualization" ]
+license = "LGPL-3.0-or-later"
+description = "Visualizing and creating graphs easily within typst"
+keywords = [ "draw", "graphs ]
+exclude = [ "/gallery/*" ]
