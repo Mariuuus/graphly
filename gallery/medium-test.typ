@@ -1,0 +1,13 @@
+#import "../src/lib.typ":*
+
+#set page(height: auto, width: auto)
+
+#graph-diagram(
+  (
+    (0,0,1,0,0),
+    (0,0,1,0,0),
+    (1,1,1,1,1),
+    (0,0,1,0,1),
+    (0,0,1,1,1)
+  )
+)
