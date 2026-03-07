@@ -5,6 +5,7 @@
     adjacency-matrix,
     iterations, 
     cool :  (iterations:int) => int, 
+    early-stopping-threshold: 0.1
   ) => {
     let N = adjacency-matrix.len()
     let positions = random-positions
@@ -15,6 +16,8 @@
 
     let repulsive-force = x => (k * k)/x
     let attractive-force = x => (x * x)/k
+
+    let end-iteration = 0
 
     for i in range(iterations) {
       let displacements = range(N).map(it => (0,0))
@@ -57,6 +60,9 @@
           }
         }
       }
+
+      let positions-before = positions
+
       for v in range(N){
         let d = calc.sqrt(displacements.at(v).at(0)*displacements.at(v).at(0) + displacements.at(v).at(1)*displacements.at(v).at(1))
 
@@ -73,15 +79,20 @@
         positions.at(v).at(1) = calc.min(H, calc.max(0, positions.at(v).at(1)))
       }
 
-      temperature = cool(iterations, i+1, W)
+      let diff = positions-before.flatten().zip(positions.flatten()).map(((pb,pa)) => calc.abs(pa - pb)).sum()
+      if(diff <= early-stopping-threshold) {break}
+
+      end-iteration = i+1
+      temperature = cool(iterations, end-iteration, W)
 
     }
-    positions
+    (positions,end-iteration)
 } 
 
 #let spring-fruchterman-reingold = (
   iterations:100, 
-  cool : (iterations, iteration, W) => (((iterations - iteration)/iterations) * (1/10 * W))
+  cool : (iterations, iteration, W) => (((iterations - iteration)/iterations) * (1/10 * W)),
+  early-stopping-threshold: (H,W) => W/10
 ) => (
     random-positions, 
     W, 
@@ -94,5 +105,6 @@
     adjacency-matrix,
     iterations, 
     cool: cool,
+    early-stopping-threshold: early-stopping-threshold(W, H)
 )
 
